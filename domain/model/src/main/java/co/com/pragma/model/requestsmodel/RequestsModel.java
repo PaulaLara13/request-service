@@ -1,7 +1,7 @@
 package co.com.pragma.model.requestsmodel;
 
-import co.com.pragma.model.requestsmodel.gateways.RequestStatusRepository;
-import co.com.pragma.model.requestsmodel.gateways.TypeLoanRepository;
+import co.com.pragma.model.requestsmodel.gateways.RequestStatus;
+import co.com.pragma.model.requestsmodel.gateways.TypeLoan;
 import lombok.*;
 import java.math.BigInteger;
 
@@ -15,6 +15,6 @@ public class RequestsModel {
     private String documentoIdentidad;
     private Double monto;
     private Integer plazo;
-    private TypeLoanRepository tipoPrestamo;
-    private RequestStatusRepository estado;
+    private TypeLoan tipoPrestamo;
+    private RequestStatus estado;
 }

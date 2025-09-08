@@ -2,9 +2,9 @@ package co.com.pragma.usecase.requests;
 
 import co.com.pragma.model.requestsmodel.ApiResponse;
 import co.com.pragma.model.requestsmodel.RequestsModel;
-import co.com.pragma.model.requestsmodel.gateways.RequestStatusRepository;
+import co.com.pragma.model.requestsmodel.gateways.RequestStatus;
 import co.com.pragma.model.requestsmodel.gateways.RequestsModelRepository;
-import co.com.pragma.model.requestsmodel.gateways.TypeLoanRepository;
+import co.com.pragma.model.requestsmodel.gateways.TypeLoan;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
 
@@ -19,7 +19,7 @@ public class RequestsUseCase {
 
     public Mono<ApiResponse> registerRequest(RequestsModel requestsModel) {
         validateFields(requestsModel);
-        requestsModel.setEstado(RequestStatusRepository.PENDIENTE_REVISION);
+        requestsModel.setEstado(RequestStatus.PENDIENTE_REVISION);
 
         return requestsModelRepository.saveRequest(requestsModel)
                 .map(saved -> {
@@ -38,10 +38,10 @@ public class RequestsUseCase {
             throw new IllegalArgumentException(TIME_LIMIT_ZERO);
         }
         if (requestsModel.getTipoPrestamo() == null  ||
-                Arrays.stream(TypeLoanRepository.values()).noneMatch((t -> t.equals(requestsModel.getTipoPrestamo())))) {
+                Arrays.stream(TypeLoan.values()).noneMatch((t -> t.equals(requestsModel.getTipoPrestamo())))) {
             throw new IllegalArgumentException(INVALID_LOAN);
         }
-
     }
+
 
 }

@@ -1,6 +1,6 @@
 package co.com.pragma.model.requestsmodel.gateways;
 
-public enum RequestStatusRepository {
+public enum RequestStatus {
     PENDIENTE_REVISION,
     APROBADO,
     RECHAZADO

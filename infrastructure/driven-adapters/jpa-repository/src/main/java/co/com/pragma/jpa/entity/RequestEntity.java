@@ -1,10 +1,9 @@
 package co.com.pragma.jpa.entity;
 
-import co.com.pragma.model.requestsmodel.gateways.RequestStatusRepository;
-import co.com.pragma.model.requestsmodel.gateways.TypeLoanRepository;
+import co.com.pragma.model.requestsmodel.gateways.RequestStatus;
+import co.com.pragma.model.requestsmodel.gateways.TypeLoan;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.math.BigInteger;
 
 @Entity
@@ -22,7 +21,7 @@ public class RequestEntity {
     private String documentoIdentidad;
     private Double monto;
     private Integer plazo;
-    private TypeLoanRepository TipoPrestamo;
-    private RequestStatusRepository estado;
+    private TypeLoan TipoPrestamo;
+    private RequestStatus estado;
 
 }
