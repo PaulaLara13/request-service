@@ -1,0 +1,46 @@
+package co.com.pragma.api.exception;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.codec.DecodingException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.server.ResponseStatusException;
+import reactor.core.publisher.Mono;
+
+import static co.com.pragma.common.Constants.*;
+
+@RestControllerAdvice
+public class RequestExceptionHandler {
+    private static final Logger log = LoggerFactory.getLogger(RequestExceptionHandler.class);
+
+    @ExceptionHandler({IllegalArgumentException.class, DecodingException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Mono<ErrorResponse> handleBadRequest(IllegalArgumentException ex) {
+        log.warn(HANDLE_BAD_REQUEST, ex.getMessage());
+        return Mono.just(new ErrorResponse(ex.getMessage()));
+    }
+
+    @ExceptionHandler(ResponseStatusException.class)
+    public Mono<ResponseEntity<ErrorResponse>> handleResponseStatus(ResponseStatusException ex) {
+        log.warn(HANDLE_BAD_REQUEST, ex.getReason());
+        var status = ex.getStatusCode();
+        var body = new ErrorResponse(ex.getReason());
+        return Mono.just(ResponseEntity.status(status).body(body));
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Mono<ErrorResponse> handleGeneral(Exception ex) {
+        log.warn(HANDLE_GENERAL, ex.getMessage(), ex);
+        return Mono.just(new ErrorResponse(
+                HANDLE_UNEXPECTED
+        ));
+    }
+
+    public record ErrorResponse(String message) {
+    }
+}
